@@ -48,4 +48,35 @@ func TestList(t *testing.T) {
 		}
 		require.Equal(t, []int{70, 80, 60, 40, 10, 30, 50}, elems)
 	})
+
+	t.Run("correct work with many types", func(t *testing.T) {
+		l := NewList()
+
+		l.PushFront([2]int{99, 1}) // [slice]
+		l.PushFront("string")      // ["string", slice]
+		l.PushFront(10)            // [10, "string", slice]
+		l.PushBack(true)           // [10, "string", slice, true]
+
+		require.Equal(t, 4, l.Len())
+		require.Equal(t, 10, l.Front().Value)
+		require.Equal(t, true, l.Back().Value)
+
+		victim := l.Back().Prev // [2]int{99, 1}
+		l.Remove(victim)        // [10, "string", true]
+		require.Equal(t, 3, l.Len())
+		l.MoveToFront(l.Back()) // [true, 10, "string"]
+
+		require.Equal(t, true, l.Front().Value)
+		require.Equal(t, "string", l.Back().Value)
+	})
+
+	t.Run("first item move to front", func(t *testing.T) {
+		l := NewList()
+		l.PushFront(10) // [10]
+		l.PushBack(20)  // [10, 20]
+		l.PushBack(30)  // [10, 20, 30]
+		require.Equal(t, 10, l.Front().Value)
+		l.MoveToFront(l.Front()) // [10, 20, 30]
+		require.Equal(t, 10, l.Front().Value)
+	})
 }
