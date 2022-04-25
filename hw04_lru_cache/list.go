@@ -85,6 +85,9 @@ func (l *list) Remove(i *ListItem) {
 }
 
 func (l *list) MoveToFront(i *ListItem) {
+	if l.firstItem == i {
+		return
+	}
 	l.Remove(i)
 	l.PushFront(i.Value)
 }
