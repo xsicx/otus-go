@@ -30,7 +30,7 @@ func validateInt(v int, rule Rule) (*ValidationError, error) {
 			}
 			iNs = append(iNs, int(in))
 		}
-		return validateIn(v, iNs), nil
+		return validateIntIn(v, iNs), nil
 	}
 
 	return nil, nil
@@ -50,4 +50,14 @@ func validateMax(v int, maxVal int) *ValidationError {
 	}
 
 	return nil
+}
+
+func validateIntIn(v int, iNs []int) *ValidationError {
+	for _, in := range iNs {
+		if in == v {
+			return nil
+		}
+	}
+
+	return &ValidationError{Err: fmt.Errorf("value must contains in %v", iNs)}
 }

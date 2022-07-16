@@ -44,3 +44,13 @@ func validateRegex(v string, regexp *regexp.Regexp) *ValidationError {
 
 	return nil
 }
+
+func validateIn(v string, iNs []string) *ValidationError {
+	for _, in := range iNs {
+		if in == v {
+			return nil
+		}
+	}
+
+	return &ValidationError{Err: fmt.Errorf("value must contains in %v", iNs)}
+}

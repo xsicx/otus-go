@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+//lint не пускает
 type comparedValue interface {
 	int | string
 }
