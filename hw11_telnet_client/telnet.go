@@ -8,9 +8,9 @@ import (
 
 type TelnetClient interface {
 	Connect() error
-	io.Closer
 	Send() error
 	Receive() error
+	Close() error
 }
 
 type telnetClient struct {
