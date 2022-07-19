@@ -62,4 +62,24 @@ func TestTelnetClient(t *testing.T) {
 
 		wg.Wait()
 	})
+
+	t.Run("broken connection usecase", func(t *testing.T) {
+		done := make(chan bool)
+		timeout := time.After(1 * time.Second)
+		go func() {
+			timeout, _ := time.ParseDuration("100s")
+			in := &bytes.Buffer{}
+			out := &bytes.Buffer{}
+
+			client := NewTelnetClient("broken_address", timeout, ioutil.NopCloser(in), out)
+			require.Error(t, client.Connect())
+			done <- true
+		}()
+
+		select {
+		case <-timeout:
+			t.Fatal("Test should fall immediately")
+		case <-done:
+		}
+	})
 }
